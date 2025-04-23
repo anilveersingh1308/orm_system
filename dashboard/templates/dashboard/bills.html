@@ -1,0 +1,80 @@
+<style>
+    .table-wrapper {
+        background: #fff;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    .table td, .table th {
+        vertical-align: middle;
+        font-size: 14px;
+    }
+    .link-text {
+        color: #0070f3;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    .action-btns {
+        display: flex;
+        gap: 10px;
+    }
+    .btn-upload {
+        background-color: #00b96b;
+        color: white;
+    }
+    .btn-new {
+        background-color: #00aaff;
+        color: white;
+    }
+    .filter-icon {
+        color: #4b5563;
+        cursor: pointer;
+    }
+    .hover-row:hover {
+        background-color: #f3f4f6;
+    }
+</style>
+<!-- filepath: c:\Users\user\Desktop\sc-project\continue\office-record-management-system\orm_system\dashboard\templates\dashboard\bills.html -->
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold">All Bills</h5>
+        <div class="action-btns">
+            <button class="btn btn-sm btn-light border">
+                <img src="https://img.icons8.com/ios-filled/20/000000/export.png"/> Upload Expense
+            </button>
+            <button class="btn btn-sm btn-success">+ New</button>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="table align-middle" id="billsTable">
+            <thead class="table-light">
+                <tr>
+                    <th><input type="checkbox" /></th>
+                    <th>DATE</th>
+                    <th>Bill No.</th>
+                    <th>REFERENCE#</th>
+                    <th>VENDOR NAME</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th class="text-end">AMOUNT</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td><input type="checkbox" /></td>
+                    <td>{{ bill.date }}</td>
+                    <td>{{ bill.bill_no }}</td>
+                    <td>{{ bill.reference_number }}</td>
+                    <td>{{ bill.vendor }}</td>
+                    <td>{{ bill.status }}</td>
+                    <td>{{ bill.due_date }}</td>
+                    <td class="text-end">{{ bill.amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

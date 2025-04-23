@@ -1,0 +1,147 @@
+
+    <style>
+        body {
+            padding: 2rem;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .item-table input, .item-table select {
+            min-width: 100px;
+        }
+        .item-table th, .item-table td {
+            vertical-align: middle;
+        }
+        .add-item {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="mb-4">New Bill</h2>
+    <form>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label">Vendor Name*</label>
+                <select class="form-select">
+                    <option>Select a Vendor</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label">Subject</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Order Number</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Bill Number</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Bill Date</label>
+                <input type="date" class="form-control" value="2025-04-13">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label">Payment Terms</label>
+                <select class="form-select">
+                    <option>Due On Receipt</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox">
+            <label class="form-check-label">This transaction is applicable for reverse charge</label>
+        </div>
+
+        <div class="item-table mb-3">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                <tr>
+                    <th>Item Details</th>
+                    <th>Account</th>
+                    <th>Quantity</th>
+                    <th>Rate</th>
+                    <th>Tax</th>
+                    <th>Custom Options</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="text" class="form-control" placeholder="Type or click to select item"></td>
+                    <td><select class="form-select"><option>Sales and account</option></select></td>
+                    <td><input type="number" class="form-control" value="1.00"></td>
+                    <td><input type="number" class="form-control"></td>
+                    <td><select class="form-select"><option>Sales Custom Tax</option></select></td>
+                    <td><select class="form-select"><option>Regular/RCM</option></select></td>
+                    <td><input type="number" class="form-control"></td>
+                    <td><button class="btn btn-danger btn-sm">X</button></td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-outline-primary add-item">+ Add Item Row</button>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <label class="form-label">Discount</label>
+                <input type="number" class="form-control">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Tax</label>
+                <select class="form-select">
+                    <option>IGST</option>
+                    <option>CGST</option>
+                    <option>SGST</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Tax Amount</label>
+                <input type="number" class="form-control" disabled>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Adjustment</label>
+                <input type="number" class="form-control">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Total</label>
+                <input type="number" class="form-control" disabled>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Attach Files</label>
+                <input type="file" class="form-control">
+                <small class="text-muted">You can upload a maximum of 5 files, 10MB each.</small>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <div>
+                <button type="submit" class="btn btn-success">Save as Draft</button>
+                <button type="submit" class="btn btn-primary">Save as Open</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+            <div>
+                <a href="#" class="text-decoration-none">Make Recurring</a>
+            </div>
+        </div>
+    </form>
+</div>

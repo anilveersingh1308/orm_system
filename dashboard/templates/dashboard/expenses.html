@@ -1,0 +1,76 @@
+<style>
+.table-wrapper {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+.table td, .table th {
+    vertical-align: middle;
+    font-size: 14px;
+}
+.link-text {
+    color: #0070f3;
+    font-weight: 500;
+    cursor: pointer;
+}
+.action-btns {
+    display: flex;
+    gap: 10px;
+}
+.btn-upload {
+    background-color: #00b96b;
+    color: white;
+}
+.btn-new {
+    background-color: #00aaff;
+    color: white;
+}
+.filter-icon {
+    color: #4b5563;
+    cursor: pointer;
+}
+.hover-row:hover {
+    background-color: #f3f4f6;
+}
+</style>
+<!-- filepath: c:\Users\user\Desktop\sc-project\continue\office-record-management-system\orm_system\dashboard\templates\dashboard\expenses.html -->
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold">All Expenses</h5>
+        <div class="action-btns">
+            <a href="#" class="btn btn-primary">+ New Expense</a>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table id="expensesTable" class="table align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th><input type="checkbox" /></th>
+                    <th>DATE</th>
+                    <th>ACCOUNT</th>
+                    <th>REFERENCE</th>
+                    <th>VENDOR</th>
+                    <th>CUSTOMER</th>
+                    <th>STATUS</th>
+                    <th class="text-end">AMOUNT</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td><input type="checkbox" /></td>
+                    <td>{{ expense.date }}</td>
+                    <td>{{ expense.account }}</td>
+                    <td>{{ expense.reference }}</td>
+                    <td>{{ expense.vendor }}</td>
+                    <td>{{ expense.customer }}</td>
+                    <td>{{ expense.status }}</td>
+                    <td class="text-end">{{ expense.amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
