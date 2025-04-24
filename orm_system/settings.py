@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dashboard',  # Add your app here
+    'django.contrib.sites',  # Add this line if you're using sites framework
 ]
 
 MIDDLEWARE = [

@@ -1,3 +1,5 @@
+{% extends 'dashboard/base.html' %}
+{% block extra_head %}
 <style>
 .table-wrapper {
     background: #fff;
@@ -34,12 +36,17 @@
     background-color: #f3f4f6;
 }
 </style>
+{% endblock extra_head %}
+
+{% block main_content %}
+    
+    
 <!-- filepath: c:\Users\user\Desktop\sc-project\continue\office-record-management-system\orm_system\dashboard\templates\dashboard\expenses.html -->
 <div class="container-fluid mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="fw-bold">All Expenses</h5>
         <div class="action-btns">
-            <a href="#" class="btn btn-primary">+ New Expense</a>
+            <a href="{% url 'new_expense' %}" class="btn btn-primary">+ New Expense</a>
         </div>
     </div>
 
@@ -61,16 +68,18 @@
                 {% for expense in expenses %}
                 <tr>
                     <td><input type="checkbox" /></td>
-                    <td>{{ expense.date }}</td>
+                    <td>{{ expense.exp_date }}</td>
                     <td>{{ expense.account }}</td>
-                    <td>{{ expense.reference }}</td>
+                    <td>{{ expense.exp_reference }}</td>
                     <td>{{ expense.vendor }}</td>
                     <td>{{ expense.customer }}</td>
-                    <td>{{ expense.status }}</td>
-                    <td class="text-end">{{ expense.amount }}</td>
+                    <td>{{ expense.exp_status }}</td>
+                    <td class="text-end">{{ expense.exp_amount }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+{% endblock main_content %}

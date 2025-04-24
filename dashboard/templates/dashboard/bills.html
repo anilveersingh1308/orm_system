@@ -1,3 +1,5 @@
+{% extends 'dashboard/base.html' %}
+{% block extra_head %}
 <style>
     .table-wrapper {
         background: #fff;
@@ -34,6 +36,9 @@
         background-color: #f3f4f6;
     }
 </style>
+{% endblock extra_head %}
+
+{% block main_content %}
 <!-- filepath: c:\Users\user\Desktop\sc-project\continue\office-record-management-system\orm_system\dashboard\templates\dashboard\bills.html -->
 
 <div class="container-fluid mt-4">
@@ -43,7 +48,7 @@
             <button class="btn btn-sm btn-light border">
                 <img src="https://img.icons8.com/ios-filled/20/000000/export.png"/> Upload Expense
             </button>
-            <button class="btn btn-sm btn-success">+ New</button>
+            <a href="{% url 'new_bill' %}" class="btn btn-primary">+ New</a> 
         </div>
     </div>
 
@@ -65,16 +70,18 @@
                 {% for bill in bills %}
                 <tr>
                     <td><input type="checkbox" /></td>
-                    <td>{{ bill.date }}</td>
+                    <td>{{ bill.bill_date }}</td>
                     <td>{{ bill.bill_no }}</td>
-                    <td>{{ bill.reference_number }}</td>
+                    <td>{{ bill.bill_reference }}</td>
                     <td>{{ bill.vendor }}</td>
-                    <td>{{ bill.status }}</td>
-                    <td>{{ bill.due_date }}</td>
-                    <td class="text-end">{{ bill.amount }}</td>
+                    <td>{{ bill.bill_status }}</td>
+                    <td>{{ bill.bill_due_date }}</td>
+                    <td class="text-end">{{ bill.bill_amount }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+{% endblock main_content %}

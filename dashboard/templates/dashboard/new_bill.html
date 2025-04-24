@@ -1,8 +1,7 @@
-
+{% extends 'dashboard/base.html' %}
+{% block extra_head %}
     <style>
-        body {
-            padding: 2rem;
-        }
+       
         .form-label {
             font-weight: bold;
         }
@@ -16,8 +15,8 @@
             margin-top: 1rem;
         }
     </style>
-</head>
-<body>
+{% endblock extra_head %}
+{% block main_content %}
 <div class="container">
     <h2 class="mb-4">New Bill</h2>
     <form>
@@ -145,3 +144,5 @@
         </div>
     </form>
 </div>
+
+{% endblock main_content %}

@@ -1,0 +1,150 @@
+{% extends 'dashboard/base.html' %}
+
+
+{% block extra_head %}
+        <style>
+        label.required::after {
+            content: " *";
+            color: red;
+        }
+        .form-check-label small {
+            font-size: 0.85rem;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block main_content %}    
+<div class="container card p-4">
+    <h4 class="mb-4">New Vendor <a href="#" class="fs-6 ms-3 text-primary">Fetch Vendor Details From GSTIN ></a></h4>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Primary Contact -->
+        <div class="row mb-3">
+            <label class="col-md-2 col-form-label">Primary Contact</label>
+            <div class="col-md-2">
+                <select class="form-select">
+                    <option>Salutation</option>
+                    <option>Mr</option>
+                    <option>Ms</option>
+                </select>
+            </div>
+            <div class="col-md-4"><input type="text" class="form-control" placeholder="First Name"></div>
+            <div class="col-md-4"><input type="text" class="form-control" placeholder="Last Name"></div>
+        </div>
+
+        <!-- Company Info -->
+        <div class="mb-3">
+            <label>Company Name</label>
+            <input type="text" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="required">Display Name</label>
+            <input type="text" class="form-control">
+            <div class="text-danger small mt-1">Enter the Display Name of your vendor.</div>
+        </div>
+
+        <!-- Email & Phone -->
+        <div class="mb-3">
+            <label>Email Address</label>
+            <input type="email" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="d-block">Phone</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="phoneType" id="workPhone" checked>
+                <label class="form-check-label" for="workPhone">Work Phone</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="phoneType" id="mobile">
+                <label class="form-check-label" for="mobile">Mobile</label>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-3">
+            {% comment %} {% for tab in 'Other Details,Address,Contact Persons,Bank Details,Custom Fields,Reporting Tags,Remarks'.split(',') %}
+            <li class="nav-item">
+                <a class="nav-link {% if forloop.first %}active{% endif %}" href="#">{{ tab }}</a>
+            </li>
+            {% endfor %} {% endcomment %}
+        </ul>
+
+        <!-- GST & PAN -->
+        <div class="mb-3">
+            <label class="required">GST Treatment</label>
+            <select class="form-select">
+                <option>Select a GST treatment</option>
+                <option>Registered Business - Regular</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="required">Source of Supply</label>
+            <select class="form-select">
+                <option>Select source</option>
+                <option>UP - Uttar Pradesh</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>PAN</label>
+            <input type="text" class="form-control">
+        </div>
+
+        <!-- MSME Checkbox -->
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="msme">
+            <label class="form-check-label" for="msme">This vendor is <strong>MSME</strong> registered</label>
+        </div>
+
+        <!-- Currency & Finance -->
+        <div class="mb-3">
+            <label>Currency</label>
+            <select class="form-select">
+                <option>INR - Indian Rupee</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Opening Balance</label>
+            <input type="text" class="form-control" placeholder="INR">
+        </div>
+
+        <div class="mb-3">
+            <label>Payment Terms</label>
+            <select class="form-select">
+                <option>Due on Receipt</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>TDS</label>
+            <select class="form-select">
+                <option>Select a Tax</option>
+            </select>
+        </div>
+
+        <!-- File Upload -->
+        <div class="mb-3">
+            <label>Documents</label>
+            <input type="file" class="form-control">
+            <div class="text-muted small mt-1">You can upload a maximum of 10 files, 10MB each</div>
+        </div>
+
+        <!-- Add more & buttons -->
+        <div class="mb-3">
+            <a href="#" class="text-primary small">Add more details</a>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success px-4">Save</button>
+            <button type="button" class="btn btn-light border px-4">Cancel</button>
+        </div>
+    </form>
+</div>
+
+{% endblock main_content %}
+    

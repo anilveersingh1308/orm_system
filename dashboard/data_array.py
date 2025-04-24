@@ -1,4 +1,4 @@
-vendors_data = [
+vendors = [
     {
         "name": "TOHID ALAM FABRIC BUTTON",
         "company": "TOHID ALAM",
@@ -57,7 +57,7 @@ vendors_data = [
     }
 ]
 
-expenses_data = [
+expenses = [
     {
         "date": "10/04/2025",
         "account": "Fuel/Mileage Expenses",
@@ -114,7 +114,7 @@ expenses_data = [
     }
 ]
 
-bills_data = [
+bills = [
     {
         "date": "09/04/2025",
         "bill_no": "037",
