@@ -48,6 +48,7 @@
 
 
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from .models import Vendor, Expense, Bill
 
 def home(request):
@@ -86,7 +87,7 @@ def newVendor(request):
             payables=payables
         )
         vendor.save()
-        return redirect(request, 'dashboard/vendors.html')
+        return redirect(reverse('vendors'))
     else:
         return render(request, 'dashboard/new_vendor.html')
 
@@ -111,7 +112,7 @@ def newBill(request):
             bill_amount=bill_amount
         )
         bill.save()
-        return redirect(request, 'dashboard/bills.html')
+        return redirect(reverse('bills'))
     
     else:
         return render(request, 'dashboard/new_bill.html')
@@ -137,7 +138,7 @@ def newExpense(request):
             exp_amount=exp_amount
         )
         expense.save()
-        return redirect(request, 'dashboard/expenses.html')
+        return redirect(reverse('expenses'))
     else:
         
         return render(request, 'dashboard/new_expense.html')

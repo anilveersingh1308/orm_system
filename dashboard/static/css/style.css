@@ -29,6 +29,11 @@ body {
     background-color: #2a3050;
 }
 
+.sidebar a.active {
+    background-color: #007bff;
+    color: white;
+}
+
 .sidebar i {
     margin-right: 10px;
 }
@@ -41,12 +46,23 @@ body {
     font-size: 14px; /* Fixed font size */
 }
 
+.sidebar .submenu a.active {
+    background-color: #0056b3; /* Darker blue for submenu links */
+    color: white;
+}
+
 .sidebar .submenu.show {
-    display: block;
+    display: block!important; /* Show submenu when active */
 }
 
 .sidebar .submenu {
     display: none;
+}
+
+/* Chevron rotation */
+.fas.fa-chevron-right.rotate {
+    transform: rotate(90deg);
+    transition: transform 0.3s ease;
 }
 
 .content {

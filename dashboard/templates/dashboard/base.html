@@ -11,120 +11,70 @@
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <style>          
-        
-    </style>
+    
     {% block extra_head %}{% endblock extra_head %}
     </head>
     <body>
         <div class="sidebar">
             <h4 class="text-center py-3">ORM-System</h4>
-            <a href="{% url 'home' %}" class=""><i class="fas fa-home"></i> Home</a>
+            <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}"><i class="fas fa-home"></i> Home</a>
             <a class="toggle-submenu" data-target="#itemsSubmenu">
                 <i class="fas fa-box"></i> Items <i class="fas fa-chevron-right float-end"></i>
             </a>
             <div class="collapse submenu" id="itemsSubmenu">
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Items</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Inventory Adjustments</a>
+                <a href="#" class="{% if request.path == '/items/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Items</a>
+                <a href="#" class="{% if request.path == '/inventory-adjustments/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Inventory Adjustments</a>
             </div>
-            <a href="#" class=""><i class="fas fa-university"></i> Banking</a>
+            <a href="#" class="{% if request.path == '/banking/' %}active{% endif %}"><i class="fas fa-university"></i> Banking</a>
             <a class="toggle-submenu" data-target="#salesSubmenu">
                 <i class="fas fa-chart-line"></i> Sales <i class="fas fa-chevron-right float-end"></i>
             </a>
             <div class="collapse submenu" id="salesSubmenu">
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Customers</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Estimates</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Retainer Invoices</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Sales Orders</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Delivery Challans</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Invoices</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Payment Links</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Payments Received</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Recurring Invoices</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Credit Notes</a>
+                <a href="#" class="{% if request.path == '/customers/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Customers</a>
+                <a href="#" class="{% if request.path == '/estimates/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Estimates</a>
+                <a href="#" class="{% if request.path == '/retainer-invoices/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Retainer Invoices</a>
+                <a href="#" class="{% if request.path == '/sales-order/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Sales Orders</a>
+                <a href="#" class="{% if request.path == '/delivery-challans/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Delivery Challans</a>
+                <a href="#" class="{% if request.path == '/invoices/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Invoices</a>
+                <a href="#" class="{% if request.path == '/payment-links/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Payment Links</a>
+                <a href="#" class="{% if request.path == '/payment-received/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Payments Received</a>
+                <a href="#" class="{% if request.path == '/recurring-invoices/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Recurring Invoices</a>
+                <a href="#" class="{% if request.path == '/credit-notes/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Credit Notes</a>
             </div>
             <a class="toggle-submenu" data-target="#purchasesSubmenu">
                 <i class="fas fa-shopping-cart"></i> Purchases <i class="fas fa-chevron-right float-end"></i>
             </a>
             <div class="collapse submenu" id="purchasesSubmenu">
-                <a href="{% url 'vendors' %}" class="">&nbsp;&nbsp;&nbsp;&nbsp;Vendors</a>
-                <a href="{% url 'expenses' %}" class="">&nbsp;&nbsp;&nbsp;&nbsp;Expenses</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Recurring Expenses</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Purchase Orders</a>
-                <a href="{% url 'bills' %}" class="">&nbsp;&nbsp;&nbsp;&nbsp;Bills</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Payments Made</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Recurring Bills</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Vendor Credits</a>
+                <a href="{% url 'vendors' %}" class="{% if request.path == '/vendors/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Vendors</a>
+                <a href="{% url 'expenses' %}" class="{% if request.path == '/expenses/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Expenses</a>
+                <a href="#" class="{% if request.path == '/recurring-expenses/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Recurring Expenses</a>
+                <a href="#" class="{% if request.path == '/purchase-orders/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Purchase Orders</a>
+                <a href="{% url 'bills' %}" class="{% if request.path == '/bills/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Bills</a>
+                <a href="#" class="{% if request.path == '/payments-made/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Payments Made</a>
+                <a href="#" class="{% if request.path == '/recurring-bills/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Recurring Bills</a>
+                <a href="#" class="{% if request.path == '/vendor-credits/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Vendor Credits</a>
             </div>
             <a class="toggle-submenu" data-target="#timeTrackingSubmenu">
                 <i class="fas fa-clock"></i> Time Tracking <i class="fas fa-chevron-right float-end"></i>
             </a>
             <div class="collapse submenu" id="timeTrackingSubmenu">
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Projects</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Timesheet</a>
+                <a href="#" class="{% if request.path == '/projects/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Projects</a>
+                <a href="#" class="{% if request.path == '/timesheet/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Timesheet</a>
             </div>
             <a class="toggle-submenu" data-target="#accountantSubmenu">
                 <i class="fas fa-calculator"></i> Accountant <i class="fas fa-chevron-right float-end"></i>
             </a>
             <div class="collapse submenu" id="accountantSubmenu">
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Manual Journals</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Recurring Journals</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Bulk Update</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Currency Adjustments</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Chart of Accounts</a>
-                <a href="#" class="">&nbsp;&nbsp;&nbsp;&nbsp;Transaction Locking</a>
+                <a href="#" class="{% if request.path == '/manual-journals/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Manual Journals</a>
+                <a href="#" class="{% if request.path == '/recurring-journals/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Recurring Journals</a>
+                <a href="#" class="{% if request.path == '/bulk-update/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Bulk Update</a>
+                <a href="#" class="{% if request.path == '/currency-adjustments/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Currency Adjustments</a>
+                <a href="#" class="{% if request.path == '/accounts-chart/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Chart of Accounts</a>
+                <a href="#" class="{% if request.path == '/transactions-locks/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Transaction Locking</a>
             </div>
         </div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const toggles = document.querySelectorAll('.toggle-submenu');
-        
-                toggles.forEach(toggle => {
-                    toggle.addEventListener('click', function () {
-                        const targetId = this.getAttribute('data-target');
-                        const target = document.querySelector(targetId);
-        
-                        document.querySelectorAll('.submenu').forEach(submenu => {
-                            if (submenu !== target) {
-                                submenu.classList.remove('show');
-                            }
-                        });
-        
-                        target.classList.toggle('show');
-                    });
-                });
-        
-                // Dynamic loading of content
-                {% comment %} const links = document.querySelectorAll('.');
-                links.forEach(link => {
-                    link.addEventListener('click', e => {
-                        e.preventDefault();
-                        const url = link.getAttribute('href');
-
-                        // Clear the #main-content div before loading new content
-                        const mainContent = document.getElementById('main-content');
-                        mainContent.innerHTML = ''; // Clear existing content
-
-                        fetch(url)
-                            .then(res => res.json())
-                            .then(data => {
-                                mainContent.innerHTML = data.html; // Load new content
-                                history.pushState(null, '', url); // Update browser path
-                            });
-                    });
-                }); 
-
-                // Handle browser back/forward
-                window.addEventListener('popstate', () => {
-                    fetch(location.pathname)
-                        .then(res => res.json())
-                        .then(data => {
-                            document.getElementById('main-content').innerHTML = data.html;
-                        });
-                }); {% endcomment %}
-            });
-        </script>
+        <script src="{% static 'js/main.js' %}"></script>
 
         
         <div class="content" id="main-content">

@@ -6,9 +6,9 @@ urlpatterns = [
     path('vendors/', views.vendors, name='vendors'),
     path('expenses/', views.expenses, name='expenses'),
     path('bills/', views.bills, name='bills'),  # Add this line
-    path('new-vendor/', views.newVendor, name='new_vendor'),  # Add this line
-    path('new-bill/', views.newBill, name='new_bill'),  # Add this line
-    path('new-expense/', views.newExpense, name='new_expense'),  # Add this line
+    path('vendors/new-vendor/', views.newVendor, name='new_vendor'),  # Add this line
+    path('bills/new-bill/', views.newBill, name='new_bill'),  # Add this line
+    path('expenses/new-expense/', views.newExpense, name='new_expense'),  # Add this line
     
     # AJAX Views
     # path('ajax/load/home/', views.ajax_home, name='ajax_home'),
