@@ -1,52 +1,3 @@
-// document.addEventListener('DOMContentLoaded', function () {
-//     const toggles = document.querySelectorAll('.toggle-submenu');
-
-//     toggles.forEach(toggle => {
-//         toggle.addEventListener('click', function () {
-//             const targetId = this.getAttribute('data-target');
-//             const target = document.querySelector(targetId);
-
-//             document.querySelectorAll('.submenu').forEach(submenu => {
-//                 if (submenu !== target) {
-//                     submenu.classList.remove('show');
-//                 }
-//             });
-
-//             target.classList.toggle('show');
-//         });
-//     });
-
-//     // Dynamic loading of content
-//     // const links = document.querySelectorAll('.');
-//     // links.forEach(link => {
-//     //     link.addEventListener('click', e => {
-//     //         e.preventDefault();
-//     //         const url = link.getAttribute('href');
-
-//     //         // Clear the #main-content div before loading new content
-//     //         const mainContent = document.getElementById('main-content');
-//     //         mainContent.innerHTML = ''; // Clear existing content
-
-//     //         fetch(url)
-//     //             .then(res => res.json())
-//     //             .then(data => {
-//     //                 mainContent.innerHTML = data.html; // Load new content
-//     //                 history.pushState(null, '', url); // Update browser path
-//     //             });
-//     //     });
-//     // }); 
-
-//     // // Handle browser back/forward
-//     // window.addEventListener('popstate', () => {
-//     //     fetch(location.pathname)
-//     //         .then(res => res.json())
-//     //         .then(data => {
-//     //             document.getElementById('main-content').innerHTML = data.html;
-//     //         });
-//     // }); 
-// });
-
-
 document.addEventListener("DOMContentLoaded", function () {
     // Get the current path
     const currentPath = window.location.pathname;
@@ -109,4 +60,19 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
+
+    // Enhance vendor select dropdown area (optional: focus/scroll effect)
+    const vendorSelect = document.querySelector('.vendor-select-scroll');
+    if (vendorSelect) {
+        vendorSelect.addEventListener('mousedown', function (e) {
+            // Ensure dropdown opens with scroll if many options
+            this.size = this.options.length > 8 ? 8 : this.options.length;
+        });
+        vendorSelect.addEventListener('blur', function () {
+            this.size = 0;
+        });
+        vendorSelect.addEventListener('change', function () {
+            this.size = 0;
+        });
+    }
 });

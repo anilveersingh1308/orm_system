@@ -1,4 +1,5 @@
 {% extends 'dashboard/base.html' %}
+{% load static %}
 {% block extra_head %}
     <style>
        
@@ -14,87 +15,123 @@
         .add-item {
             margin-top: 1rem;
         }
+        .vendor-select-scroll {
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 {% endblock extra_head %}
 {% block main_content %}
-<div class="container">
-    <h2 class="mb-4">New Bill</h2>
-    <form>
-        <div class="mb-3">
-            <div class="col-md-8 d-flex">
-                <label class="col-md-3 pt-1">Vendor Name <span class="text-danger">*</span></label>
-                <select class="form-select">
-                    <option>Select a Vendor</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="mb-3">
+    <div class="container">
+        <h2 class="mb-4">New Bill</h2>
+        <form>
             <div class="mb-3">
+                <div class="col-md-8 d-flex">
+                    <label class="col-md-3 pt-1">Vendor Name <span class="text-danger">*</span></label>
+                    <select name="vendor_id" class="form-select vendor-select-scroll">
+                        <option value="">Select a Vendor</option>
+                        {% for vendor in vendors %}
+                            <option value="{{ vendor.id }}">{{ vendor.company_name }} ({{ vendor.name }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="mb-3">
+                    <div class="col-md-6 d-flex">
+                        <label class="col-md-4 pt-1">Bill Number <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
                 <div class="col-md-6 d-flex">
-                    <label class="col-md-4 pt-1">Bill Number <span class="text-danger">*</span></label>
+                    <label class="col-md-4 pt-1">Order Number</label>
                     <input type="text" class="form-control">
                 </div>
             </div>
-            <div class="col-md-6 d-flex">
-                <label class="col-md-4 pt-1">Order Number</label>
-                <input type="text" class="form-control">
+            <div class="mb-3">
+                <div class="col-md-6 d-flex">
+                    <label class="col-md-4 pt-1">Bill Date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" value="2025-04-13">
+                </div>
             </div>
-        </div>
-        <div class="mb-3">
-            <div class="col-md-6 d-flex">
-                <label class="col-md-4 pt-1">Bill Date <span class="text-danger">*</span></label>
-                <input type="date" class="form-control" value="2025-04-13">
+            <div class="mb-3">
+                <div class="col-md-6 d-flex">
+                    <label class="col-md-4 pt-1">Due Date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control ms-1" value="2025-04-13">
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6 d-flex">
-                <label class="col-md-4 pt-1">Due Date <span class="text-danger">*</span></label>
-                <input type="date" class="form-control ms-1" value="2025-04-13">
+            <div class="mb-3">
+                <div class="col-md-6 d-flex">
+                    <label class="col-md-4 pt-1">Payment Terms <span class="text-danger">*</span></label>
+                    <select name="payment_terms" class="form-select vendor-select-scroll">
+                        <option value="">Select Payment Term</option>
+                        {% for term in payment_terms %}
+                            <option value="{{ term.0 }}">{{ term.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-            <div class="col-md-5 d-flex ms-5">
-                <label class="col-md-4 pt-1">Payment Terms <span class="text-danger">*</span></label>
-                <select class="form-select">
-                    <option>Due On Receipt</option>
-                </select>
-            </div>
-        </div>
 
 
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox">
-            <label class="form-check-label">This transaction is applicable for reverse charge</label>
-        </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox">
+                <label class="form-check-label">This transaction is applicable for reverse charge</label>
+            </div>
 
-        <div class="item-table mb-3">
-            <table class="table table-bordered">
+            <div class="item-table mb-3">
+                <table class="table table-bordered" id="itemTable">
                 <thead class="table-light">
-                <tr>
+                    <tr>
                     <th>Item Details</th>
                     <th>Account</th>
                     <th>Quantity</th>
                     <th>Rate</th>
                     <th>Tax</th>
-                    <th>Custom Options</th>
+                    <th>Select a Customer</th>
                     <th>Amount</th>
                     <th>Action</th>
-                </tr>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><input type="text" class="form-control" placeholder="Type or click to select item"></td>
-                    <td><select class="form-select"><option>Sales and account</option></select></td>
-                    <td><input type="number" class="form-control" value="1.00"></td>
-                    <td><input type="number" class="form-control"></td>
-                    <td><select class="form-select"><option>Sales Custom Tax</option></select></td>
-                    <td><select class="form-select"><option>Regular/RCM</option></select></td>
-                    <td><input type="number" class="form-control"></td>
-                    <td><button class="btn btn-danger btn-sm">X</button></td>
-                </tr>
+                    <tr>
+                    <td class="item-autocomplete-cell"><input type="text" class="form-control item-autocomplete" placeholder="Type or click to select item"></td>
+                    <td><select name="account[]" class="form-select">
+                            <option value="">Select an Account</option>
+                            {% for acc in expense_account_choices %}
+                                <option value="{{ acc.0 }}">{{ acc.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input type="number" name="quantity[]" class="form-control" value="1"></td>
+                    <td><input type="number" name="rate[]" class="form-control" value="0"></td>
+                    <td><select name="tax[]" class="form-select">
+                            <option value="">Select a Tax</option>
+                            {% for tax in tax_choices %}
+                                <option value="{{ tax.0 }}">{{ tax.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><select class="form-select">
+                            <option value="">Select a Customer</option>
+                            {% for customer in customers %}
+                                <option value="{{ customer.id }}">({{ customer.name }})</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" name="amount[]" value="0" readonly tabindex="-1">
+                    </td>
+                    <td><button class="btn btn-danger btn-sm delete-row">X</button></td>
+                    </tr>
                 </tbody>
-            </table>
-            <button class="btn btn-outline-primary add-item">+ Add Item Row</button>
-        </div>
+                </table>
+                <button class="btn btn-outline-primary add-item">+ Add Item Row</button>
+            </div>
+
+            <script>
+
+            </script>
 
         <div class="row mb-3">
             <div class="col-md-2">
@@ -104,9 +141,10 @@
             <div class="col-md-2">
                 <label class="col-md-4 pt-1">Tax</label>
                 <select class="form-select">
-                    <option>IGST</option>
-                    <option>CGST</option>
-                    <option>SGST</option>
+                    <option>Select Tax</option>
+                    {% for tax in tax_choices %}
+                        <option value="{{ tax.0 }}">{{ tax.1 }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="col-md-2">
@@ -128,13 +166,6 @@
             <textarea class="form-control" rows="2"></textarea>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="col-md-4 pt-1">Attach Files</label>
-                <input type="file" class="form-control">
-                <small class="text-muted">You can upload a maximum of 5 files, 10MB each.</small>
-            </div>
-        </div>
 
         <div class="d-flex justify-content-between">
             <div>
@@ -149,4 +180,12 @@
     </form>
 </div>
 
+<script>
+const apparelItemsData = {{ apparel_items_json|safe }};
+</script>
+
 {% endblock main_content %}
+
+{% block extra_js %}
+    <script src="{% static 'js/support.js' %}"></script>
+{% endblock extra_js %}

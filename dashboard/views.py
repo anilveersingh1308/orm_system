@@ -50,6 +50,9 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Vendor, Expense, Bill
+from .DataArray import APPAREL_VENDOR_LIST, PAYMENT_METHOD_CHOICES, TAX_AND_TAX_GROUP_CHOICES, EXPENSE_ACCOUNT_CHOICES, APPAREL_CUSTOMER_LIST
+from .DataArray import APPAREL_MANUFACTURING_ITEM_DETAILS
+import json
 
 def home(request):
     return render(request, 'dashboard/home.html')
@@ -113,9 +116,17 @@ def newBill(request):
         )
         bill.save()
         return redirect(reverse('bills'))
-    
     else:
-        return render(request, 'dashboard/new_bill.html')
+        vendors = Vendor.objects.all()
+        context = {
+            "vendors": vendors,
+            "customer":APPAREL_CUSTOMER_LIST,
+            "payment_terms": PAYMENT_METHOD_CHOICES,
+            "tax_choices": TAX_AND_TAX_GROUP_CHOICES,
+            "expense_account_choices": EXPENSE_ACCOUNT_CHOICES,
+            "apparel_items_json": json.dumps(APPAREL_MANUFACTURING_ITEM_DETAILS)
+        }
+        return render(request, 'dashboard/new_bill.html', context)
 
 def newExpense(request):
     if request.method == "POST":
