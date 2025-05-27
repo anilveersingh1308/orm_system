@@ -79,16 +79,16 @@ INDIAN_STATE_CHOICES = [
 
 # Combined choices for tax and tax group (value, display label)
 TAX_AND_TAX_GROUP_CHOICES = [
-    ("igst_0", "IGST 0%"),
-    ("igst_5", "IGST 5%"),
-    ("igst_12", "IGST 12%"),
-    ("igst_18", "IGST 18%"),
-    ("igst_25", "IGST 25%"),
-    ("gst_0", "GST 0%"),
-    ("gst_5", "GST 5%"),
-    ("gst_12", "GST 12%"),
-    ("gst_18", "GST 18%"),
-    ("gst_25", "GST 25%"),
+    ("0", "IGST 0%"),
+    ("5", "IGST 5%"),
+    ("12", "IGST 12%"),
+    ("18", "IGST 18%"),
+    ("25", "IGST 25%"),
+    ("0", "GST 0%"),
+    ("5", "GST 5%"),
+    ("12", "GST 12%"),
+    ("18", "GST 18%"),
+    ("25", "GST 25%"),
 ]
 
 # List of apparel industry vendors as tuples (company name, email)

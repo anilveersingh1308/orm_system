@@ -120,7 +120,7 @@ def newBill(request):
         vendors = Vendor.objects.all()
         context = {
             "vendors": vendors,
-            "customer":APPAREL_CUSTOMER_LIST,
+            "customers": APPAREL_CUSTOMER_LIST,
             "payment_terms": PAYMENT_METHOD_CHOICES,
             "tax_choices": TAX_AND_TAX_GROUP_CHOICES,
             "expense_account_choices": EXPENSE_ACCOUNT_CHOICES,

@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const accountSelectHTML = document.querySelector('select[name="account[]"]')?.outerHTML || '';
     // Get the tax select HTML from the template (rendered by Django)
     const taxSelectHTML = document.querySelector('select[name="tax[]"]')?.outerHTML || '';
+    const customerSelectHTML = document.querySelector('select[name="customer[]"]')?.outerHTML || '';
 
     // Item data for autocomplete and autofill (from Django context)
     const itemData = typeof apparelItemsData !== 'undefined' ? apparelItemsData : [];
@@ -49,7 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
         <td><input type="number" class="form-control" value="1.00" name="quantity[]"></td>
         <td><input type="number" name="rate[]" class="form-control" value="0"></td>
         <td>${taxSelectHTML}</td>
-        <td><select class="form-select"><option>Regular/RCM</option></select></td>
+        <td>${customerSelectHTML}</td>
+        <td><input type="number" class="form-control" name="taxAmount[]" value="0" readonly tabindex="-1"></td>
         <td><input type="number" class="form-control" name="amount[]" value="0" readonly tabindex="-1"></td>
         <td><button type="button" class="btn btn-danger btn-sm delete-row">X</button></td>
         `;
@@ -57,6 +59,10 @@ document.addEventListener("DOMContentLoaded", function () {
         attachAutocomplete(row.querySelector('.item-autocomplete'));
         attachAmountListeners(row); // Attach amount listeners to the new row
         updateAllAmounts(); // Immediately update the amount for the new row
+        // Calculate and update the new row's tax and amount fields
+        calculateRowAmount(row);
+        calculateTotalTax();
+        calculateTotalAmount();
     }
 
     // Attach autocomplete to all item input fields
@@ -116,31 +122,108 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Calculate and update amount fields based on rate and quantity
-    function updateAllAmounts() {
-        // For each row in the item table
-        document.querySelectorAll('#itemTable tbody tr').forEach(function(row) {
-            const qtyInput = row.querySelector('input[name="quantity[]"]');
-            const rateInput = row.querySelector('input[name="rate[]"]');
-            const amountInput = row.querySelector('input[name="amount[]"]');
-            if (qtyInput && rateInput && amountInput) {
-                const qty = parseFloat(qtyInput.value) || 0;
-                const rate = parseFloat(rateInput.value) || 0;
-                amountInput.value = (qty * rate).toFixed(2);
-            }
+    // Calculate and update the amount for a single row
+    function calculateRowAmount(row) {
+        const qtyInput = row.querySelector('input[name="quantity[]"]');
+        const rateInput = row.querySelector('input[name="rate[]"]');
+        const taxSelect = row.querySelector('select[name="tax[]"]');
+        const amountInput = row.querySelector('input[name="amount[]"]');
+        const taxAmountInput = row.querySelector('input[name="taxAmount[]"]');
+
+        const qty = parseFloat(qtyInput?.value) || 0;
+        const rate = parseFloat(rateInput?.value) || 0;
+        const taxPercent = parseFloat(taxSelect?.value) || 0;
+
+        const baseAmount = qty * rate;
+        const taxAmount = (baseAmount * taxPercent) / 100;
+
+        if (amountInput) {
+            amountInput.value = baseAmount.toFixed(2);
+        }
+        if (taxAmountInput) {
+            taxAmountInput.value = taxAmount.toFixed(2);
+        }
+    }
+
+    // Calculate and update the total tax for all rows
+    function calculateTotalTax() {
+        let totalTax = 0;
+        document.querySelectorAll('input[name="taxAmount[]"]').forEach(input => {
+            totalTax += parseFloat(input.value) || 0;
+        });
+        const totalTaxInput = document.querySelector('input[name="totalTaxAmount"]');
+        if (totalTaxInput) {
+            totalTaxInput.value = totalTax.toFixed(2);
+        }
+        return totalTax;
+    }
+
+    // Calculate and update the total amount (sum of all row amounts + total tax - adjustment)
+    function calculateTotalAmount() {
+        let totalAmount = 0;
+        document.querySelectorAll('input[name="amount[]"]').forEach(input => {
+            totalAmount += parseFloat(input.value) || 0;
+        });
+        const totalTax = calculateTotalTax();
+        totalAmount += totalTax;
+        // Subtract adjustment amount if present
+        const adjustmentInput = document.querySelector('input[name="adjustmentAmount[]"]');
+        let adjustment = 0;
+        if (adjustmentInput) {
+            adjustment = parseFloat(adjustmentInput.value) || 0;
+        }
+        totalAmount += adjustment;
+        const totalAmountInput = document.querySelector('input[name="totalAmount"]');
+        if (totalAmountInput) {
+            totalAmountInput.value = totalAmount.toFixed(2);
+        }
+    }
+
+    // Listen for changes in adjustment amount and recalculate total
+    const adjustmentInput = document.querySelector('input[name="adjustmentAmount[]"]');
+    if (adjustmentInput) {
+        adjustmentInput.addEventListener('input', function() {
+            calculateTotalAmount();
         });
     }
 
-    // Attach event listeners to update amount on input change
-    function attachAmountListeners(row) {
+    // Handle input changes in a row
+    function handleInputChange(row) {
+        calculateRowAmount(row);
+        calculateTotalTax();
+        calculateTotalAmount();
+    }
+
+    // Bind events to a row for real-time calculation
+    function bindRowEvents(row) {
         const qtyInput = row.querySelector('input[name="quantity[]"]');
         const rateInput = row.querySelector('input[name="rate[]"]');
+        const taxSelect = row.querySelector('select[name="tax[]"]');
+        const removeBtn = row.querySelector('.delete-row');
         if (qtyInput) {
-            qtyInput.addEventListener('input', updateAllAmounts);
+            qtyInput.addEventListener('input', () => handleInputChange(row));
         }
         if (rateInput) {
-            rateInput.addEventListener('input', updateAllAmounts);
+            rateInput.addEventListener('input', () => handleInputChange(row));
         }
+        if (taxSelect) {
+            taxSelect.addEventListener('change', () => handleInputChange(row));
+        }
+        calculateTotalTax();
+    }
+
+    // Update all amounts and total tax for all rows
+    function updateAllAmounts() {
+        document.querySelectorAll('#itemTable tbody tr').forEach(row => {
+            calculateRowAmount(row);
+        });
+        calculateTotalTax();
+        calculateTotalAmount();
+    }
+
+    // Attach event listeners to update amount and tax in real time
+    function attachAmountListeners(row) {
+        bindRowEvents(row);
     }
 
     // Attach autocomplete to all initial item fields (including the first row)

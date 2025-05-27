@@ -89,6 +89,7 @@
                     <th>Rate</th>
                     <th>Tax</th>
                     <th>Select a Customer</th>
+                    <th>Tax Amount</th>
                     <th>Amount</th>
                     <th>Action</th>
                     </tr>
@@ -112,13 +113,14 @@
                             {% endfor %}
                         </select>
                     </td>
-                    <td><select class="form-select">
+                    <td><select class="form-select" name="customer[]">
                             <option value="">Select a Customer</option>
                             {% for customer in customers %}
-                                <option value="{{ customer.id }}">({{ customer.name }})</option>
+                                <option value="{{ customer.id }}">{{ customer.name }}</option>
                             {% endfor %}
                         </select>
                     </td>
+                    <td><input type="number" class="form-control" name="taxAmount[]" readonly></td>
                     <td>
                         <input type="number" class="form-control" name="amount[]" value="0" readonly tabindex="-1">
                     </td>
@@ -133,31 +135,32 @@
 
             </script>
 
-        <div class="row mb-3">
-            <div class="col-md-2">
-                <label class="col-md-4 pt-1">Discount</label>
-                <input type="number" class="form-control">
+        <div class="d-flex justify-content-end mb-3">
+            <div class="row" style="max-width: 50%; min-width: 320px; width: 100%;">
+            <div class="col-12">
+                <div class="row g-3">
+                <div class="col text-start" style="min-width: 90px;">
+                    <label class="form-label mb-0">Tax Amount : </label>
+                </div>
+                <div class="col text-start" style="min-width: 90px;">
+                    <label class="form-label mb-0">Adjustment : </label>
+                </div>
+                <div class="col text-start" style="min-width: 90px;">
+                    <label class="form-label mb-0">Total Amount : </label>
+                </div>
+                </div>
+                <div class="row g-3 mt-1">
+                <div class="col" style="min-width: 90px;">
+                    <input type="number" class="form-control" name="totalTaxAmount" value="0" readonly tabindex="-1">
+                </div>
+                <div class="col" style="min-width: 90px;">
+                    <input type="number" class="form-control" name="adjustmentAmount[]" value="0">
+                </div>
+                <div class="col" style="min-width: 90px;">
+                    <input type="number" class="form-control" name="totalAmount" value="0" readonly tabindex="-1">
+                </div>
+                </div>
             </div>
-            <div class="col-md-2">
-                <label class="col-md-4 pt-1">Tax</label>
-                <select class="form-select">
-                    <option>Select Tax</option>
-                    {% for tax in tax_choices %}
-                        <option value="{{ tax.0 }}">{{ tax.1 }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label class="col-md-4 pt-1">Tax Amount</label>
-                <input type="number" class="form-control" disabled>
-            </div>
-            <div class="col-md-2">
-                <label class="col-md-4 pt-1">Adjustment</label>
-                <input type="number" class="form-control">
-            </div>
-            <div class="col-md-2">
-                <label class="col-md-4 pt-1">Total</label>
-                <input type="number" class="form-control" disabled>
             </div>
         </div>
 
