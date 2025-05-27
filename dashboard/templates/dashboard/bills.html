@@ -73,7 +73,7 @@
                     <td>{{ bill.bill_date }}</td>
                     <td>{{ bill.bill_no }}</td>
                     <td>{{ bill.bill_reference }}</td>
-                    <td>{{ bill.vendor }}</td>
+                    <td><a href="{% url 'bill_display' bill.id %}" class="link-text">{{ bill.vendor }}</a></td>
                     <td>{{ bill.bill_status }}</td>
                     <td>{{ bill.bill_due_date }}</td>
                     <td class="text-end">{{ bill.bill_amount }}</td>

@@ -2,149 +2,219 @@
 
 
 {% block extra_head %}
-        <style>
-        label.required::after {
-            content: " *";
-            color: red;
-        }
-        .form-check-label small {
-            font-size: 0.85rem;
-        }
+    <style>
+    label.required::after {
+        content: " *";
+        color: red;
+    }
+    .form-section {
+        background: #f8fafc;
+        border-radius: 10px;
+        padding: 18px 22px 10px 22px;
+        margin-bottom: 22px;
+        box-shadow: 0 2px 8px #e5e7eb;
+    }
+    .form-section-title {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #0070f3;
+        margin-bottom: 10px;
+        letter-spacing: 0.01em;
+    }
+    .form-check-label small {
+        font-size: 0.85rem;
+    }
+    .section-divider {
+        border-top: 2px solid #e5e7eb;
+        margin: 32px 0 24px 0;
+    }
+    .container.card.p-4 {
+        margin-top: 0 !important;
+    }
     </style>
 {% endblock extra_head %}
 
-{% block main_content %}    
+{% block main_content %}
 <div class="container card p-4">
-    <h4 class="mb-4">New Vendor <a href="#" class="fs-6 ms-3 text-primary">Fetch Vendor Details From GSTIN ></a></h4>
+    <h4 class="mb-4">New Vendor <span class="fs-6 ms-3 text-primary">Fetch Vendor Details From GSTIN &gt;</span></h4>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <!-- Primary Contact -->
-        <div class="row mb-3">
-            <label class="col-md-2 col-form-label">Primary Contact</label>
-            <div class="col-md-2">
-                <select class="form-select">
-                    <option>Salutation</option>
-                    <option>Mr</option>
-                    <option>Ms</option>
-                </select>
+        <div class="form-section">
+            <div class="form-section-title">Primary Contact</div>
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <select class="form-select" name="salutation">
+                        <option value="">Salutation</option>
+                        <option value="Mr">Mr</option>
+                        <option value="Ms">Ms</option>
+                    </select>
+                </div>
+                <div class="col-md-5"><input type="text" class="form-control" name="first_name" placeholder="First Name"></div>
+                <div class="col-md-5"><input type="text" class="form-control" name="last_name" placeholder="Last Name"></div>
             </div>
-            <div class="col-md-4"><input type="text" class="form-control" placeholder="First Name"></div>
-            <div class="col-md-4"><input type="text" class="form-control" placeholder="Last Name"></div>
-        </div>
-
-        <!-- Company Info -->
-        <div class="mb-3">
-            <label>Company Name</label>
-            <input type="text" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label class="required">Display Name</label>
-            <input type="text" class="form-control">
-            <div class="text-danger small mt-1">Enter the Display Name of your vendor.</div>
-        </div>
-
-        <!-- Email & Phone -->
-        <div class="mb-3">
-            <label>Email Address</label>
-            <input type="email" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label class="d-block">Phone</label>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="phoneType" id="workPhone" checked>
-                <label class="form-check-label" for="workPhone">Work Phone</label>
+            <div class="mb-3">
+                <label>Company Name</label>
+                <input type="text" class="form-control" name="company_name">
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="phoneType" id="mobile">
-                <label class="form-check-label" for="mobile">Mobile</label>
+            <div class="mb-3">
+                <label class="required">Display Name</label>
+                <input type="text" class="form-control" name="name" required>
+                <div class="text-danger small mt-1">Enter the Display Name of your vendor.</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Email Address</label>
+                    <input type="email" class="form-control" name="email">
+                </div>
+                <div class="col-md-6">
+                    <label>Phone</label>
+                    <input type="text" class="form-control" name="phone">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="required">State</label>
+                    <select class="form-select" name="state" required>
+                        <option value="">Select State</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="required">Payables</label>
+                    <input type="number" class="form-control" name="payables" required min="0" value="0">
+                </div>
             </div>
         </div>
 
-        <!-- Tabs -->
-        <ul class="nav nav-tabs mb-3">
-            {% comment %} {% for tab in 'Other Details,Address,Contact Persons,Bank Details,Custom Fields,Reporting Tags,Remarks'.split(',') %}
-            <li class="nav-item">
-                <a class="nav-link {% if forloop.first %}active{% endif %}" href="#">{{ tab }}</a>
-            </li>
-            {% endfor %} {% endcomment %}
-        </ul>
-
-        <!-- GST & PAN -->
-        <div class="mb-3">
-            <label class="required">GST Treatment</label>
-            <select class="form-select">
-                <option>Select a GST treatment</option>
-                <option>Registered Business - Regular</option>
-            </select>
+        <div class="form-section">
+            <div class="form-section-title">Billing Address</div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="required">Address Line 1</label>
+                    <input type="text" class="form-control" name="billing_address1" required>
+                </div>
+                <div class="col-md-6">
+                    <label>Address Line 2</label>
+                    <input type="text" class="form-control" name="billing_address2">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="required">City</label>
+                    <input type="text" class="form-control" name="billing_city" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="required">State</label>
+                    <input type="text" class="form-control" name="billing_state" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="required">Pincode</label>
+                    <input type="text" class="form-control" name="billing_pincode" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Country</label>
+                <input type="text" class="form-control" name="billing_country" value="India">
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label class="required">Source of Supply</label>
-            <select class="form-select">
-                <option>Select source</option>
-                <option>UP - Uttar Pradesh</option>
-            </select>
+        <div class="form-section">
+            <div class="form-section-title">Shipping Address <span class="text-muted fs-6 ms-2"><input type="checkbox" id="sameAsBilling"> Same as Billing</span></div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="required">Address Line 1</label>
+                    <input type="text" class="form-control" name="shipping_address1" required>
+                </div>
+                <div class="col-md-6">
+                    <label>Address Line 2</label>
+                    <input type="text" class="form-control" name="shipping_address2">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="required">City</label>
+                    <input type="text" class="form-control" name="shipping_city" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="required">State</label>
+                    <input type="text" class="form-control" name="shipping_state" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="required">Pincode</label>
+                    <input type="text" class="form-control" name="shipping_pincode" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Country</label>
+                <input type="text" class="form-control" name="shipping_country" value="India">
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label>PAN</label>
-            <input type="text" class="form-control">
+        <div class="form-section">
+            <div class="form-section-title">Bank Details</div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="required">Account Holder Name</label>
+                    <input type="text" class="form-control" name="bank_account_name" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="required">Account Number</label>
+                    <input type="text" class="form-control" name="bank_account_number" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="required">Bank Name</label>
+                    <input type="text" class="form-control" name="bank_name" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="required">IFSC Code</label>
+                    <input type="text" class="form-control" name="bank_ifsc" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Branch</label>
+                <input type="text" class="form-control" name="bank_branch">
+            </div>
         </div>
 
-        <!-- MSME Checkbox -->
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="msme">
-            <label class="form-check-label" for="msme">This vendor is <strong>MSME</strong> registered</label>
-        </div>
-
-        <!-- Currency & Finance -->
-        <div class="mb-3">
-            <label>Currency</label>
-            <select class="form-select">
-                <option>INR - Indian Rupee</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label>Opening Balance</label>
-            <input type="text" class="form-control" placeholder="INR">
-        </div>
-
-        <div class="mb-3">
-            <label>Payment Terms</label>
-            <select class="form-select">
-                <option>Due on Receipt</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label>TDS</label>
-            <select class="form-select">
-                <option>Select a Tax</option>
-            </select>
-        </div>
-
-        <!-- File Upload -->
-        <div class="mb-3">
-            <label>Documents</label>
-            <input type="file" class="form-control">
-            <div class="text-muted small mt-1">You can upload a maximum of 10 files, 10MB each</div>
-        </div>
-
-        <!-- Add more & buttons -->
-        <div class="mb-3">
-            <a href="#" class="text-primary small">Add more details</a>
-        </div>
-
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-success px-4">Save</button>
-            <button type="button" class="btn btn-light border px-4">Cancel</button>
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-primary px-4">Save</button>
+            <a href="{% url 'vendors' %}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 </div>
-
+<script>
+// Shipping same as billing functionality
+const sameAsBilling = document.getElementById('sameAsBilling');
+if (sameAsBilling) {
+    sameAsBilling.addEventListener('change', function() {
+        if (this.checked) {
+            document.querySelector('input[name="shipping_address1"]').value = document.querySelector('input[name="billing_address1"]').value;
+            document.querySelector('input[name="shipping_address2"]').value = document.querySelector('input[name="billing_address2"]').value;
+            document.querySelector('input[name="shipping_city"]').value = document.querySelector('input[name="billing_city"]').value;
+            document.querySelector('input[name="shipping_state"]').value = document.querySelector('input[name="billing_state"]').value;
+            document.querySelector('input[name="shipping_pincode"]').value = document.querySelector('input[name="billing_pincode"]').value;
+            document.querySelector('input[name="shipping_country"]').value = document.querySelector('input[name="billing_country"]').value;
+        } else {
+            document.querySelector('input[name="shipping_address1"]').value = '';
+            document.querySelector('input[name="shipping_address2"]').value = '';
+            document.querySelector('input[name="shipping_city"]').value = '';
+            document.querySelector('input[name="shipping_state"]').value = '';
+            document.querySelector('input[name="shipping_pincode"]').value = '';
+            document.querySelector('input[name="shipping_country"]').value = 'India';
+        }
+    });
+}
+</script>
 {% endblock main_content %}
-    

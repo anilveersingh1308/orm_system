@@ -1,0 +1,256 @@
+{% extends 'dashboard/base.html' %}
+{% block extra_head %}
+<style>
+    html, body {
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+    .vendor-detail-fixed {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+    }
+    .vendor-header-fixed {
+        background: #fff;
+        z-index: 10;
+        box-shadow: 0 2px 12px #0070f31a;
+        padding: 0 0 0 0;
+        margin: 0;
+        position: relative;
+    }
+    .vendor-header-inner {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        min-height: 100px;
+        padding: 0 48px;
+        border-radius: 0;
+        margin: 0;
+        border-bottom: 2px solid #f4f6fa;
+    }
+    .vendor-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0070f3 60%, #00b96b 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 2.7rem;
+        font-weight: 700;
+        box-shadow: 0 2px 12px #0070f31a;
+    }
+    .vendor-title {
+        font-size: 2.1rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+        color: #222;
+    }
+    .vendor-company {
+        color: #555;
+        font-size: 1.18rem;
+        font-weight: 400;
+    }
+    .vendor-detail-scroll {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        background: #f4f6fa;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin: 0;
+        padding: 0;
+    }
+    .vendor-card {
+        background: #fff;
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+        padding: 32px 48px 32px 48px;
+        max-width: 1100px;
+        margin: 0;
+        position: relative;
+        width: 100%;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    .section-title {
+        font-size: 1.18rem;
+        font-weight: 600;
+        color: #0070f3;
+        margin-top: 32px;
+        margin-bottom: 10px;
+        letter-spacing: 0.01em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .vendor-table {
+        width: 100%;
+        margin-top: 0;
+        margin-bottom: 0;
+        border-collapse: separate;
+        border-spacing: 0 2px;
+    }
+    .vendor-table th {
+        width: 180px;
+        color: #888;
+        font-weight: 500;
+        background: none;
+        border: none;
+        padding: 10px 0 10px 0;
+        vertical-align: top;
+        font-size: 1.05rem;
+    }
+    .vendor-table td {
+        background: none;
+        border: none;
+        padding: 10px 0 10px 0;
+        font-size: 1.13rem;
+        vertical-align: top;
+        color: #222;
+    }
+    .vendor-actions {
+        margin-top: 40px;
+        display: flex;
+        gap: 16px;
+        justify-content: flex-end;
+    }
+    .vendor-back {
+        background: #f3f4f6;
+        color: #333;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 26px;
+        font-weight: 500;
+        font-size: 1.08rem;
+        transition: background 0.2s;
+    }
+    .vendor-back:hover {
+        background: #e5e7eb;
+        color: #0070f3;
+    }
+    .vendor-payables {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #00b96b;
+        letter-spacing: 0.01em;
+    }
+    .vendor-contact-link {
+        color: #0070f3;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .vendor-contact-link:hover {
+        text-decoration: underline;
+        color: #0056b3;
+    }
+    .badge-muted {
+        background: #f3f4f6;
+        color: #888;
+        border-radius: 4px;
+        padding: 2px 8px;
+        font-size: 0.97em;
+        font-weight: 400;
+    }
+    .section-divider {
+        border-top: 2px solid #e5e7eb;
+        margin: 32px 0 18px 0;
+    }
+    .vendor-details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 48px;
+    }
+    @media (max-width: 900px) {
+        .vendor-header-inner { padding: 0 8px; }
+        .vendor-card { padding: 24px 8px; }
+        .vendor-details-grid { grid-template-columns: 1fr; gap: 0; }
+    }
+    @media (max-width: 600px) {
+        .vendor-header-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+        .vendor-title { font-size: 1.3rem; }
+        .vendor-avatar { width: 54px; height: 54px; font-size: 1.5rem; }
+        .section-title { font-size: 1rem; }
+        .vendor-table th, .vendor-table td { font-size: 0.98rem; }
+    }
+</style>
+{% endblock extra_head %}
+
+{% block main_content %}
+<div class="vendor-detail-fixed">
+    <div class="vendor-header-fixed">
+        <div class="vendor-header-inner">
+            <div class="vendor-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div>
+                <div class="vendor-title">{{ vendor.name }}</div>
+                <div class="vendor-company">{{ vendor.company_name|default:'—' }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="vendor-detail-scroll">
+        <div class="vendor-card">
+            <div class="vendor-details-grid">
+                <div>
+                    <div class="section-title"><i class="fas fa-id-card"></i> Primary Contact</div>
+                    <table class="vendor-table">
+                        <tr>
+                            <th>Name</th>
+                            <td>{{ vendor.primary_contact|default:'—' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{% if vendor.email %}<a href="mailto:{{ vendor.email }}" class="vendor-contact-link">{{ vendor.email }}</a>{% else %}<span class="badge-muted">—</span>{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td>{% if vendor.phone %}<a href="tel:{{ vendor.phone }}" class="vendor-contact-link">{{ vendor.phone }}</a>{% else %}<span class="badge-muted">—</span>{% endif %}</td>
+                        </tr>
+                    </table>
+                    <div class="section-divider"></div>
+                    <div class="section-title"><i class="fas fa-file-invoice"></i> Other Details</div>
+                    <table class="vendor-table">
+                        <tr><th>GSTIN</th><td>{{ vendor.gstin|default:'—' }}</td></tr>
+                        <tr><th>Payables</th><td class="vendor-payables">₹{{ vendor.payables|floatformat:2 }}</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <div class="section-title"><i class="fas fa-map-marker-alt"></i> Billing Address</div>
+                    <table class="vendor-table">
+                        <tr><th>Address</th><td>{{ vendor.billing_address|default:'—' }}</td></tr>
+                        <tr><th>City</th><td>{{ vendor.billing_city|default:'—' }}</td></tr>
+                        <tr><th>State</th><td>{{ vendor.billing_state|default:'—' }}</td></tr>
+                        <tr><th>Pincode</th><td>{{ vendor.billing_zip|default:'—' }}</td></tr>
+                    </table>
+                    <div class="section-divider"></div>
+                    <div class="section-title"><i class="fas fa-truck"></i> Shipping Address</div>
+                    <table class="vendor-table">
+                        <tr><th>Address</th><td>{{ vendor.shipping_address|default:'—' }}</td></tr>
+                        <tr><th>City</th><td>{{ vendor.shipping_city|default:'—' }}</td></tr>
+                        <tr><th>State</th><td>{{ vendor.shipping_state|default:'—' }}</td></tr>
+                        <tr><th>Pincode</th><td>{{ vendor.shipping_zip|default:'—' }}</td></tr>
+                    </table>
+                    <div class="section-divider"></div>
+                    <div class="section-title"><i class="fas fa-university"></i> Bank Details</div>
+                    <table class="vendor-table">
+                        <tr><th>Account Number</th><td>{{ vendor.bank_account_number|default:'—' }}</td></tr>
+                        <tr><th>Bank Name</th><td>{{ vendor.bank_name|default:'—' }}</td></tr>
+                        <tr><th>IFSC</th><td>{{ vendor.bank_ifsc|default:'—' }}</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="vendor-actions">
+                <a href="{% url 'vendors' %}" class="vendor-back"><i class="fas fa-arrow-left me-1"></i> Back to Vendors</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main_content %}

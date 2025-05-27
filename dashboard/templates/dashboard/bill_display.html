@@ -1,0 +1,144 @@
+{% extends 'dashboard/base.html' %}
+{% block extra_head %}
+<style>
+    .bill-actions {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .bill-actions .btn {
+        min-width: 120px;
+    }
+    .invoice-section {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+    }
+    .invoice-title {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    .invoice-table th, .invoice-table td {
+        vertical-align: middle;
+        font-size: 1rem;
+    }
+    .summary-table td {
+        font-size: 1rem;
+        padding: 0.3rem 0.5rem;
+    }
+    @media print {
+        body * {
+            visibility: hidden !important;
+        }
+        .invoice-section, .invoice-section * {
+            visibility: visible !important;
+        }
+        .invoice-section {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100vw !important;
+            min-width: 100vw !important;
+            max-width: 100vw !important;
+            height: 100vh !important;
+            min-height: 100vh !important;
+            max-height: 100vh !important;
+            background: #fff !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+            padding: 2rem !important;
+        }
+        .bill-actions {
+            display: none !important;
+        }
+        .container {
+            width: 100vw !important;
+            max-width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        html, body {
+            background: #fff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+    }
+</style>
+{% endblock extra_head %}
+{% block main_content %}
+<div class="container">
+    <div class="bill-actions">
+        <a href="{% url 'bill_edit' bill.id %}" class="btn btn-outline-primary">Edit</a>
+        <button type="button" class="btn btn-outline-secondary" onclick="window.print()">PDF</button>
+        <a href="#" class="btn btn-outline-success">Record Payment</a>
+        <a href="#" class="btn btn-outline-info">Clone</a>
+    </div>
+    <div class="invoice-section">
+        <div class="invoice-header">
+            <div>
+                <div class="invoice-title">Bill #{{ bill.bill_no }}</div>
+                <div><strong>Status:</strong> {{ bill.bill_status }}</div>
+                <div><strong>Bill Date:</strong> {{ bill.bill_date }}</div>
+                <div><strong>Due Date:</strong> {{ bill.bill_due_date }}</div>
+            </div>
+            <div>
+                <div><strong>Vendor:</strong> {{ bill.vendor.company_name }}{% if bill.vendor.name and bill.vendor.name != bill.vendor.company_name %} ({{ bill.vendor.name }}){% endif %}</div>
+                <div><strong>Reference:</strong> {{ bill.bill_reference }}</div>
+                <div><strong>Payment Terms:</strong> {{ bill.payment_terms }}</div>
+            </div>
+        </div>
+        <table class="table table-bordered invoice-table">
+            <thead class="table-light">
+                <tr>
+                    <th>Item Details</th>
+                    <th>Account</th>
+                    <th>Quantity</th>
+                    <th>Rate</th>
+                    <th>Tax</th>
+                    <th>Customer</th>
+                    <th>Tax Amount</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.item_details }}</td>
+                    <td>{{ item.account }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.rate }}</td>
+                    <td>{{ item.tax }}</td>
+                    <td>{{ item.customer }}</td>
+                    <td>{{ item.tax_amount }}</td>
+                    <td>{{ item.amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <strong>Notes:</strong><br>
+                <div>{{ bill.notes|linebreaksbr }}</div>
+            </div>
+            <div class="col-md-6">
+                <table class="table summary-table">
+                    <tr><td>Discount</td><td>{{ bill.discount }}</td></tr>
+                    <tr><td>Total Tax Amount</td><td>{{ bill.total_tax_amount }}</td></tr>
+                    <tr><td>Adjustment</td><td>{{ bill.adjustment }}</td></tr>
+                    <tr><td><strong>Total Amount</strong></td><td><strong>{{ bill.total_amount }}</strong></td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main_content %}

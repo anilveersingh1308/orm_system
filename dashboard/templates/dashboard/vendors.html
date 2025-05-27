@@ -3,18 +3,34 @@
     <style>
         .table-wrapper {
             background: #fff;
-            border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            overflow-x: auto;
+            max-height: 520px;
+        }
+        .table thead th {
+            background: #f8fafc;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            border-bottom: 2px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 2;
         }
         .table td, .table th {
             vertical-align: middle;
-            font-size: 14px;
+            font-size: 15px;
         }
         .link-text {
             color: #0070f3;
             font-weight: 500;
             cursor: pointer;
+            text-decoration: none;
+        }
+        .link-text:hover {
+            text-decoration: underline;
+            color: #0056b3;
         }
         .action-btns {
             display: flex;
@@ -25,57 +41,151 @@
             color: white;
         }
         .btn-new {
-            background-color: #00aaff;
+            background-color: #0070f3;
             color: white;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: background 0.18s, box-shadow 0.18s, color 0.18s;
+            box-shadow: 0 2px 8px #0070f31a;
         }
-        .filter-icon {
-            color: #4b5563;
-            cursor: pointer;
+        .btn-new:hover, .btn-new:focus {
+            background-color: #0056b3;
+            color: #fff;
+            box-shadow: 0 4px 16px #0070f32a;
+            text-decoration: none;
+            outline: none;
+        }
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 18px;
+            align-items: center;
+        }
+        .filter-bar input {
+            max-width: 220px;
         }
         .hover-row:hover {
             background-color: #f3f4f6;
+            transition: background 0.2s;
+        }
+        .table td {
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .table th, .table td {
+            padding: 12px 10px;
+        }
+        .table th:first-child, .table td:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+        .table th:last-child, .table td:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+        .main-content-fixed {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .vendors-header-bar {
+            flex-shrink: 0;
+        }
+        .vendors-table-scroll {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+        }
+        #vendorsTable thead.sticky-top {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: #f8fafc;
+            box-shadow: 0 2px 8px #e5e7eb;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        #vendorsTable th, #vendorsTable td {
+            background: #fff;
+        }
+        .vendors-table-scroll::-webkit-scrollbar {
+            width: 8px;
+            background: #f1f1f1;
+        }
+        .vendors-table-scroll::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 8px;
+        }
+        /* Remove margin and padding from the All Vendors title/header */
+        .all-vendors-title, .vendors-header-bar {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
         }
     </style>
 {% endblock extra_head %}
 
 {% block main_content %}
-        
-    <!-- filepath: c:\Users\user\Desktop\sc-project\continue\office-record-management-system\orm_system\dashboard\templates\dashboard\vendors.html -->
-    <div class="container-fluid mt-4">
+<div class="main-content-fixed">
+    <div class="container-fluid vendors-header-bar">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-bold">All Vendors</h5>
-            <div class="action-btns">
-                <a href="{% url 'new_vendor' %}" class="btn btn-primary">+ New Vendor</a>
-            </div>
+            <h4 class="fw-bold mb-0 all-vendors-title">All Vendors</h4>
         </div>
-
-        <div class="table-wrapper">
-            <table id="vendorsTable" class="table align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th><input type="checkbox" /></th>
-                        <th>NAME</th>
-                        <th>COMPANY NAME</th>
-                        <th>EMAIL</th>
-                        <th>PHONE</th>
-                        <th>STATE</th>
-                        <th class="text-end">PAYABLES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for vendor in vendors %}
-                    <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>{{ vendor.name }}</td>
-                        <td>{{ vendor.company }}</td>
-                        <td>{{ vendor.email }}</td>
-                        <td>{{ vendor.phone }}</td>
-                        <td>{{ vendor.state }}</td>
-                        <td class="text-end">{{ vendor.payables }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="filter-bar d-flex align-items-center gap-2 mb-3">
+            <input type="text" class="form-control" id="vendorSearch" placeholder="Search by name, company, or state..." style="max-width: 260px;">
+            <button class="btn btn-outline-secondary" id="clearSearch" type="button">Clear</button>
+            <a href="{% url 'new_vendor' %}" class="btn btn-new px-4 py-2 ms-auto">+ New Vendor</a>
         </div>
     </div>
+    <div class="container-fluid vendors-table-scroll" style="min-height:0;">
+        <table id="vendorsTable" class="table align-middle table-hover mb-0" style="min-width:900px;">
+            <thead class="sticky-top">
+                <tr>
+                    <th style="width:36px; background:#f8fafc;"> <input type="checkbox" /> </th>
+                    <th style="background:#f8fafc;">NAME</th>
+                    <th style="background:#f8fafc;">COMPANY NAME</th>
+                    <th style="background:#f8fafc;">EMAIL</th>
+                    <th style="background:#f8fafc;">PHONE</th>
+                    <th style="background:#f8fafc;">STATE</th>
+                    <th style="background:#f8fafc;" class="text-end">PAYABLES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vendor in vendors %}
+                <tr class="hover-row">
+                    <td><input type="checkbox" /></td>
+                    <td><a href="{% url 'vendor_detail' vendor.id %}" class="link-text">{{ vendor.name }}</a></td>
+                    <td>{{ vendor.company_name }}</td>
+                    <td>{{ vendor.email }}</td>
+                    <td>{{ vendor.phone }}</td>
+                    <td>{{ vendor.state }}</td>
+                    <td class="text-end">₹{{ vendor.payables|floatformat:2 }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="text-center text-muted">No vendors found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+// Simple client-side search for the vendors table
+const searchInput = document.getElementById('vendorSearch');
+const clearBtn = document.getElementById('clearSearch');
+searchInput?.addEventListener('input', function() {
+    const val = this.value.trim().toLowerCase();
+    document.querySelectorAll('#vendorsTable tbody tr').forEach(row => {
+        if (!val) { row.style.display = ''; return; }
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(val) ? '' : 'none';
+    });
+});
+clearBtn?.addEventListener('click', function() {
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input'));
+});
+</script>
 {% endblock main_content %}
