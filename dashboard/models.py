@@ -33,15 +33,29 @@ class Vendor(models.Model):
 
 class Expense(models.Model):
     exp_date = models.DateField()
+    employee = models.CharField(max_length=100, null=True, blank=True)
     account = models.CharField(max_length=50)
-    exp_reference = models.CharField(max_length=150)
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, null=True, blank=True)  # Changed to lowercase
-    customer = models.CharField(max_length=255)
-    status = models.CharField(max_length=20)
-    exp_amount = models.IntegerField()
+    exp_amount = models.DecimalField(max_digits=12, decimal_places=2)
+    paid_through = models.CharField(max_length=100, null=True, blank=True)
+    expense_type = models.CharField(max_length=20, null=True, blank=True)
+    sac = models.CharField(max_length=20, null=True, blank=True)
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, null=True, blank=True)
+    gst_treatment = models.CharField(max_length=50, null=True, blank=True)
+    source_of_supply = models.CharField(max_length=50, null=True, blank=True)
+    destination_of_supply = models.CharField(max_length=50, null=True, blank=True)
+    reverse_charge = models.BooleanField(default=False)
+    tax = models.CharField(max_length=50, null=True, blank=True)
+    amount_is = models.CharField(max_length=20, null=True, blank=True)
+    invoice_no = models.CharField(max_length=50, null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
+    customer = models.CharField(max_length=255, null=True, blank=True)
+    reporting_tags = models.CharField(max_length=255, null=True, blank=True)
+    receipt = models.FileField(upload_to='receipts/', null=True, blank=True)
+    exp_reference = models.CharField(max_length=150, null=True, blank=True)
+    status = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.exp_reference} - {self.exp_amount}"
+        return f"{self.exp_reference or self.invoice_no or ''} - {self.exp_amount}"
 
 class Bill(models.Model):
     bill_no = models.CharField(max_length=50)
