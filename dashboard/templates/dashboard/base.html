@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ORM-System Dashboard{% endblock %}</title>
@@ -10,13 +10,122 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    
+    <style>
+        html, body {
+            font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 17px;
+            color: #23272f;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: 0.01em;
+        }
+        .sidebar {
+            background: #fff;
+            border-right: 1.5px solid #e5e7eb;
+            min-width: 220px;
+            min-height: 100vh;
+            font-size: 1.08rem;
+            box-shadow: 2px 0 12px #e5e7eb33;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+        .sidebar-title-fixed {
+            flex-shrink: 0;
+            background: #fff;
+            border-bottom: 1.5px solid #e5e7eb;
+            z-index: 20;
+            position: sticky;
+            top: 0;
+        }
+        .sidebar-scroll {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+            min-height: 0;
+        }
+        .sidebar h4 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0070f3;
+            letter-spacing: 0.03em;
+            margin: 0;
+            padding: 24px 0 20px 0;
+            text-align: center;
+        }
+        .page-title {
+            margin-left: 0;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #23272f;
+            padding-left: 0;
+        }
+        @media (min-width: 992px) {
+            .page-title {
+                margin-left: 0;
+                padding-left: 0;
+            }
+        }
+        .sidebar a {
+            color: #23272f;
+            font-weight: 500;
+            padding: 12px 24px;
+            display: block;
+            border-radius: 6px;
+            margin: 2px 0;
+            transition: background 0.15s, color 0.15s;
+        }
+        .sidebar a.active, .sidebar a:hover {
+            background: #f0f7ff;
+            color: #0070f3;
+        }
+        .content {
+            padding: 0 0 0 0;
+            min-height: 100vh;
+        }
+        .btn, .form-control, .form-select {
+            font-size: 1.08rem;
+            border-radius: 6px;
+        }
+        .btn-primary {
+            background: #0070f3;
+            border: none;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: #0056b3;
+        }
+        .card {
+            border-radius: 14px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            border: none;
+        }
+        table {
+            font-size: 1.04rem;
+        }
+        label, .form-label {
+            font-weight: 500;
+            color: #23272f;
+        }
+        input, select, textarea {
+            font-size: 1.05rem;
+        }
+        .form-section-title {
+            font-size: 1.13rem;
+        }
+    </style>
     {% block extra_head %}{% endblock extra_head %}
-    </head>
-    <body>
-        <div class="sidebar">
-            <h4 class="text-center py-3">ORM-System</h4>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-title-fixed">
+            <h4>ORM-System</h4>
+        </div>
+        <div class="sidebar-scroll">
             <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}"><i class="fas fa-home"></i> Home</a>
             <a class="toggle-submenu" data-target="#itemsSubmenu">
                 <i class="fas fa-box"></i> Items <i class="fas fa-chevron-right float-end"></i>
@@ -73,24 +182,11 @@
                 <a href="#" class="{% if request.path == '/transactions-locks/' %}active{% endif %}">&nbsp;&nbsp;&nbsp;&nbsp;Transaction Locking</a>
             </div>
         </div>
-
-        <script src="{% static 'js/main.js' %}"></script>
-
-        
-        <div class="content" id="main-content">
-            
-            {% block main_content %}
-                
-            {% endblock main_content %}
-                
-        </div>
-        
-        
-        
-    </body>
-    
-    {% block extra_js %}
-        
-    {% endblock extra_js %}
-        
+    </div>
+    <div class="content" id="main-content">
+        {% block main_content %}{% endblock main_content %}
+    </div>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock extra_js %}
+</body>
 </html>

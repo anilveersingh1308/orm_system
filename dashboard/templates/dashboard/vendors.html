@@ -1,11 +1,77 @@
 {% extends 'dashboard/base.html' %}
 {% block extra_head %}
     <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            background: #f4f6fa;
+        }
+        .main-content-fixed {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+        .vendors-header-bar {
+            flex-shrink: 0;
+            background: #fff;
+            border-bottom: 2px solid #f4f6fa;
+            margin: 0;
+            padding: 0 0 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .all-vendors-title {
+            margin: 25px !important;
+            padding: 0 !important;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #23272f;
+        }
+        .filter-bar {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 0;
+            align-items: center;
+            padding: 0 0 0 0;
+        }
+        .filter-bar input {
+            max-width: 220px;
+            font-size: 1.05rem;
+        }
+        .btn-new {
+            background-color: #0070f3;
+            color: white;
+            font-weight: 500;
+            border-radius: 6px;
+            font-size: 1.08rem;
+            box-shadow: 0 2px 8px #0070f31a;
+            transition: background 0.18s, box-shadow 0.18s, color 0.18s;
+        }
+        .btn-new:hover, .btn-new:focus {
+            background-color: #0056b3;
+            color: #fff;
+            box-shadow: 0 4px 16px #0070f32a;
+            outline: none;
+        }
+        .vendors-table-scroll {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            background: #fff;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+            margin: 0;
+            padding: 0;
+        }
         .table-wrapper {
             background: #fff;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: none;
             overflow-x: auto;
             max-height: 520px;
         }
@@ -17,10 +83,12 @@
             position: sticky;
             top: 0;
             z-index: 2;
+            font-size: 1.08rem;
         }
         .table td, .table th {
             vertical-align: middle;
-            font-size: 15px;
+            font-size: 1.08rem;
+            padding: 14px 10px;
         }
         .link-text {
             color: #0070f3;
@@ -32,38 +100,6 @@
             text-decoration: underline;
             color: #0056b3;
         }
-        .action-btns {
-            display: flex;
-            gap: 10px;
-        }
-        .btn-upload {
-            background-color: #00b96b;
-            color: white;
-        }
-        .btn-new {
-            background-color: #0070f3;
-            color: white;
-            font-weight: 500;
-            border-radius: 6px;
-            transition: background 0.18s, box-shadow 0.18s, color 0.18s;
-            box-shadow: 0 2px 8px #0070f31a;
-        }
-        .btn-new:hover, .btn-new:focus {
-            background-color: #0056b3;
-            color: #fff;
-            box-shadow: 0 4px 16px #0070f32a;
-            text-decoration: none;
-            outline: none;
-        }
-        .filter-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 18px;
-            align-items: center;
-        }
-        .filter-bar input {
-            max-width: 220px;
-        }
         .hover-row:hover {
             background-color: #f3f4f6;
             transition: background 0.2s;
@@ -71,44 +107,11 @@
         .table td {
             border-bottom: 1px solid #f1f1f1;
         }
-        .table th, .table td {
-            padding: 12px 10px;
-        }
         .table th:first-child, .table td:first-child {
             border-radius: 8px 0 0 8px;
         }
         .table th:last-child, .table td:last-child {
             border-radius: 0 8px 8px 0;
-        }
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
-        .main-content-fixed {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .vendors-header-bar {
-            flex-shrink: 0;
-        }
-        .vendors-table-scroll {
-            flex: 1 1 auto;
-            overflow-y: auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-        }
-        #vendorsTable thead.sticky-top {
-            position: sticky;
-            top: 0;
-            z-index: 2;
-            background: #f8fafc;
-            box-shadow: 0 2px 8px #e5e7eb;
-            border-bottom: 2px solid #e5e7eb;
-        }
-        #vendorsTable th, #vendorsTable td {
-            background: #fff;
         }
         .vendors-table-scroll::-webkit-scrollbar {
             width: 8px;
@@ -118,23 +121,26 @@
             background: #e5e7eb;
             border-radius: 8px;
         }
-        /* Remove margin and padding from the All Vendors title/header */
-        .all-vendors-title, .vendors-header-bar {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
+        .page-content, .vendors-table-scroll, .table-wrapper, .table td, .table th, .link-text, .action-btns, .btn, .form-control, .form-select, .btn-new, .filter-icon, .hover-row, .vendors-header-bar, .main-content-fixed {
+            font-size: 14px !important;
+        }
+        .page-title {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #23272f;
         }
     </style>
 {% endblock extra_head %}
 
 {% block main_content %}
-<div class="main-content-fixed">
+<div class="main-content-fixed page-content">
     <div class="container-fluid vendors-header-bar">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold mb-0 all-vendors-title">All Vendors</h4>
+        <div class="d-flex justify-content-between align-items-center mb-3 m-4">
+            <h3 class="page-title">All Vendors</h3>
         </div>
-        <div class="filter-bar d-flex align-items-center gap-2 mb-3">
+        <div class="filter-bar d-flex align-items-center gap-2 mb-3 mx-3">
             <input type="text" class="form-control" id="vendorSearch" placeholder="Search by name, company, or state..." style="max-width: 260px;">
             <button class="btn btn-outline-secondary" id="clearSearch" type="button">Clear</button>
             <a href="{% url 'new_vendor' %}" class="btn btn-new px-4 py-2 ms-auto">+ New Vendor</a>

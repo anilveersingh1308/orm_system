@@ -4,14 +4,14 @@
     <style>
         .col-md-4 pt-1 { font-weight: bold; }
         .item-table input, .item-table select { min-width: 100px; }
-        .item-table th, .item-table td { vertical-align: middle; }
+        .item-table th, .item-table td { vertical-align: middle; font-size: 1.08rem; }
         .add-item { margin-top: 1rem; }
         .vendor-select-scroll { max-height: 200px; overflow-y: auto; }
-    </style>
-{% endblock extra_head %}
-{% block main_content %}
-<div class="container">
-    <h2 class="mb-4">Edit Bill</h2>
+        .form-label, label { font-size: 1.08rem; font-weight: 500; color: #23272f; }
+        .form-control, .form-select { font-size: 1.08rem; border-radius: 6px; }
+        .btn, .btn-primary { font-size: 1.08rem; border-radius: 6px; font-weight: 500; }
+        .btn-primary { background: #0070f3; border: none; }
+        .btn-primary:hover, .btn-primary:focus { background: #0056b3
     <form method="post">
         {% csrf_token %}
         <div class="mb-3">
